@@ -25,10 +25,11 @@ def fetch_prayer_times():
             return {}
         timings = {}
         for li in section.find_next("ul", class_="timing--shedule").find_all("li"):
-            parts = li.text.strip().split()
+            hour = li.contents[0].strip()
+            minute = li.contents[2].strip()
             name = li.find("span", class_="time--name").text.strip()
-            time = parts[0] + parts[1] if len(parts) >= 2 else ""
-            timings[name] = time
+            full_time = f"{hour}:{minute}"
+            timings[name] = full_time
         return timings
     except:
         return {}
