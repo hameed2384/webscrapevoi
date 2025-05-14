@@ -40,17 +40,9 @@ def fetch_weather():
         res = requests.get(url, timeout=10)
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
-        desc = soup.select_one("div.wr-day__details__weather-type-description")
-        temp = soup.select_one("span.wr-value--temperature--c")
-        wind = soup.select_one("div.wr-wind-speed span.wr-value--windspeed--mph")
+        temp_main = soup.select_one("span.wr-value--temperature--c span[aria-hidden='true']")
         return {
-            "description": desc.get_text(strip=True) if desc else "",
-            "feels_like": "20\u00b0C",
-            "humidity": "40%",
-            "temperature": temp.get_text(strip=True) if temp else "",
-            "weather_type": "Sunny",
-            "wind_direction": "NE",
-            "wind_speed": wind.get_text(strip=True) if wind else ""
+            "temperature": temp_main.get_text(strip=True) if temp_main else "N/A"
         }
     except:
         return {}
