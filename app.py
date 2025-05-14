@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import pytz
+import os
 
 app = Flask(__name__)
 
@@ -39,13 +40,13 @@ def fetch_weather():
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
         desc = soup.select_one("div.wr-day__details__weather-type-description")
-        temp = soup.select_one("div.wr-day-temperature__low span.wr-value--temperature--c")
+        temp = soup.select_one("span.wr-value--temperature--c")
         wind = soup.select_one("div.wr-wind-speed span.wr-value--windspeed--mph")
         return {
             "description": desc.get_text(strip=True) if desc else "",
             "feels_like": "20\u00b0C",
             "humidity": "40%",
-            "temperature": temp.get_text(strip=True) + "\u00b0" if temp else "",
+            "temperature": temp.get_text(strip=True) if temp else "",
             "weather_type": "Sunny",
             "wind_direction": "NE",
             "wind_speed": wind.get_text(strip=True) if wind else ""
@@ -83,8 +84,6 @@ def home():
         "schedule": fetch_schedule(),
         "weather": fetch_weather()
     })
-
-import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
