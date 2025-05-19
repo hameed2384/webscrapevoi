@@ -35,7 +35,7 @@ def fetch_prayer_times():
         return {}
 
 def fetch_weather():
-    url = "https://www.google.com/search?q=temperature+morden&hl=en"
+    url = "https://weather.com/weather/today/l/UKXX0103:1:UK"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36"
     }
@@ -43,12 +43,13 @@ def fetch_weather():
         res = requests.get(url, headers=headers, timeout=10)
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
-        temp_main = soup.select_one("span#wob_tm")
+        temp_main = soup.select_one("span[data-testid='TemperatureValue']")
         return {
-            "temperature": temp_main.get_text(strip=True) + "°C" if temp_main else "N/A"
+            "temperature": temp_main.get_text(strip=True) if temp_main else "N/A"
         }
     except:
         return {}
+
 
 def fetch_schedule():
     url = "https://voiceofislam.co.uk/show-schedule/"
