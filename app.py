@@ -35,7 +35,7 @@ def fetch_prayer_times():
         return {}
 
 def fetch_weather():
-    url = "https://weather.com/weather/today/l/UKXX0103:1:UK"
+    url = "https://weather.com/en-GB/weather/today/l/0b8697c01baca04214b4abd206319d3eba60db5fb05c191012c4e02f6bdb23a4"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36"
     }
@@ -49,7 +49,6 @@ def fetch_weather():
         }
     except:
         return {}
-
 
 def fetch_schedule():
     url = "https://voiceofislam.co.uk/show-schedule/"
