@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -6,6 +7,7 @@ import pytz
 import os
 
 app = Flask(__name__)
+CORS(app)  # Allow cross-origin requests from any domain
 
 def fetch_current_time():
     try:
@@ -31,7 +33,7 @@ def fetch_prayer_times():
             full_time = f"{hour}:{minute}"
             timings[name] = full_time
         return timings
-    except:
+    except Exception:
         return {}
 
 def fetch_weather():
@@ -47,7 +49,7 @@ def fetch_weather():
         return {
             "temperature": temp_main.get_text(strip=True) if temp_main else "N/A"
         }
-    except:
+    except Exception:
         return {}
 
 def fetch_schedule():
@@ -69,7 +71,7 @@ def fetch_schedule():
                     "title": title.text.strip()
                 })
         return schedule
-    except:
+    except Exception:
         return []
 
 @app.route("/api/home")
